@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
     "bin/private-dumper",
     "helper.rb",
     "lib/private-dumper.rb",
+    "private-dumper.gemspec",
     "test_private-dumper.rb"
   ]
   s.homepage = %q{http://github.com/jfahrenkrug/private-dumper}
