@@ -1,0 +1,49 @@
+= Private Dumper 
+
+A Ruby class-dump wrapper to create header files from private iOS frameworks 
+
+== About
+
+Private Dumper is a tool to simplify the use of class-dump (http://www.codethecode.com/projects/class-dump/) to create header files from all private iOS frameworks so you can use them in your app (yes, yes, I know you can't put them on the AppStore then).
+
+Usage: 
+private-dumper <iOS SDK version> <path to headers output directory>
+
+Please provide both the iOS SDK version you want to dump (for example 4.2) and the path to the output directory.
+Example: private-dumper 4.2 ~/Headers
+
+in 2011 by Johannes Fahrenkrug
+inspired by Erica Sadun's DumpFrameworks Perl script.
+
+== Using private APIs in your Xcode project
+
+This is how you can actually use private APIs in your app (mostly taken from this article by Aral Balkan: http://aralbalkan.com/2106):
+
+1. Run Private Dumper.
+2. Create a new Xcode Project.
+3. In Xcode, right-click the Frameworks folder, select "Add" -> "Existing Frameworks".
+4. Navigate to and then select the private framework(s) you want to include, for example "/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/System/Library/PrivateFrameworks/AccountSettings.framework". Beware, however, that you'll have to change to the actual device's SDK if you are running your app on the device and not in the simulator.
+5. Add the corresponding dumped header files for the private SDK you want to use to your Xcode project (drag & drop, for example).
+6. Possibly tweak the import statements in those header files a bit.
+7. Go to "Project" -> "Edit Project Settings", click on the Build tab, and scroll down to the Linking section. For the Other Linker Flags property, enter 
+   -force_flat_namespace 
+   and 
+   -undefined suppress
+8. Finally include the dumped header files in your application's classes and use their private methods.
+9. Build & Run & Marvel
+
+== Contributing to private-dumper
+ 
+* Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
+* Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
+* Fork the project
+* Start a feature/bugfix branch
+* Commit and push until you are happy with your contribution
+* Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
+* Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
+
+== Copyright
+
+Copyright (c) 2011 Johannes Fahrenkrug. See LICENSE.txt for
+further details.
+
