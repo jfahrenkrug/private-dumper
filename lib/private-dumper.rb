@@ -27,7 +27,7 @@ module PrivateDumper
 
       sdk_version = args[0]
 
-      sdk_path = "/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator#{sdk_version}.sdk/System/Library/"
+      sdk_path = "/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator#{sdk_version}.sdk/"
 
       if !File.exists?(sdk_path)
         puts "The directory #{sdk_path} does not exist. Did you possibly provide an invalid SDK version?"
@@ -47,7 +47,7 @@ module PrivateDumper
         return -3
       end
 
-      ["#{sdk_path}Frameworks", "#{sdk_path}PrivateFrameworks"].each do |frmwk_path|
+      ["#{sdk_path}System/Library/Frameworks", "#{sdk_path}System/Library/PrivateFrameworks", "#{sdk_path}Developer/Library/Frameworks", "#{sdk_path}Developer/Library/PrivateFrameworks"].each do |frmwk_path|
         puts frmwk_path
 
         Dir["#{frmwk_path}/**/*.framework"].sort.each do |frmwk|
@@ -57,24 +57,29 @@ module PrivateDumper
 
           if !system(cmd)
             puts "Command #{cmd} failed with exit code #{$?.exitstatus}"
+          else
+            # Remove unnecessary imports
+            puts "Fixing imports..."
+            Dir["#{headers_path}/#{frmwk_name}/*.h"].each do |header|
+              # Read...
+              lines = []
+              File.open(header, 'r') do |header_file| 
+                header_file.each_line do |line|
+                  if line =~ /#import\s<#{frmwk_name}\/([^\.]*\.h)>/
+                    line = %{#import "#{$1}"}
+                  end
+
+                  lines << line unless line =~ /#import\s"NSObject\.h"/
+                end
+              end
+
+              # Write...
+              File.open(header, 'w') {|header_file| header_file.puts lines.join("\n")}
+            end
           end
         end
       end
 
-      # Remove unnecessary imports
-      puts "Removing unnecessary imports..."
-      Dir["#{headers_path}/**/*.h"].each do |header|
-        # Read...
-        lines = []
-        File.open(header, 'r') do |header_file| 
-          header_file.each_line do |line|
-            lines << line unless line =~ /#import "NSObject\.h"/
-          end
-        end
-
-        # Write...
-        File.open(header, 'w') {|header_file| header_file.puts lines.join("\n")}
-      end
       puts "Done."
       return 0
     end
