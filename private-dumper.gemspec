@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{private-dumper}
-  s.version = "0.1.0"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Johannes Fahrenkrug"]
-  s.date = %q{2011-01-04}
+  s.date = %q{2011-01-06}
   s.default_executable = %q{private-dumper}
   s.description = %q{The private iOS iPhone and iPad frameworks are full of wonderful goodies that are just waiting to be discovered. The fantastic class-dump tool lets you peek into those frameworks and generates the header files that you need to use them in your project. Private Dumper greatly simplifies the process of dumping the header files of all private frameworks for a given SDK version.}
   s.email = %q{johannes@springenwerk.com}
