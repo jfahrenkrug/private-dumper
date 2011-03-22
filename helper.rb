@@ -1,3 +1,5 @@
+#kommentar
+
 require 'rubygems'
 require 'bundler'
 begin
