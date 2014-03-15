@@ -27,8 +27,9 @@ module PrivateDumper
 
       sdk_version = args[0]
 
-      sdk_path = "/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator#{sdk_version}.sdk/"
 
+      #sdk_path = "/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator#{sdk_version}.sdk/"
+      sdk_path = "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator#{sdk_version}.sdk/"
       if !File.exists?(sdk_path)
         puts "The directory #{sdk_path} does not exist. Did you possibly provide an invalid SDK version?"
         return -2
